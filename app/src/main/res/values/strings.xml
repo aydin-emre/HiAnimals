@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">AnimalsIntroduction</string>
-</resources>
+    <string name="login_with_huawei">Login via Huawei</string>
+    <string name="login">Login</string>
+    <string name="emailaddress">EmailAddress</string>
+    <string name="password">Password</string>
+    <string name="space" />
+    <string name="e_mail_address">E-Mail Address</string>
+ </resources>
