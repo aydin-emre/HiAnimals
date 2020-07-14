@@ -6,4 +6,8 @@
     <string name="password">Password</string>
     <string name="space" />
     <string name="e_mail_address">E-Mail Address</string>
- </resources>
+    <string name="arengine_cancel" priority="translator">CANCEL</string>
+    <string name="arengine_install" priority="translator">INSTALL</string>
+    <string name="arengine_install_app" priority="translator">Install the latest version of HUAWEI AR Engine to continue.</string>
+
+</resources>

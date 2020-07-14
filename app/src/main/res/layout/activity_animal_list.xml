@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AnimalListActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/horizontalScrollView">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="300sp"
+                    android:layout_height="600sp"
+                    android:layout_margin="30sp"
+                    android:id="@+id/cv1"
+                    android:backgroundTint="#FFFFFF">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:layout_width="250sp"
+                            android:layout_height="250sp"
+                            android:layout_marginStart="20sp"
+                            android:src="@drawable/deer"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:text="Deer"
+                            android:textColor="#000000"
+                            android:textSize="@dimen/hiad_text_15_sp"
+                            android:layout_marginTop="@dimen/hiad_10_dp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#000000"
+                            android:layout_gravity="center_horizontal"
+                            android:textSize="@dimen/hiad_text_12_sp"
+                            android:layout_marginTop="@dimen/hiad_10_dp"
+                            android:layout_marginStart="@dimen/hiad_5_dp"
+                            android:text="Deer are the hoofed ruminant mammals forming the family Cervidae. The two main groups of deer are the Cervinae, including the muntjac, the elk (wapiti), the fallow deer, and the chital; and the Capreolinae, including the reindeer (caribou), the roe deer, and the moose. "/>
+                    <Button
+                        android:id="@+id/btnShowAnimal"
+                        android:layout_width="100sp"
+                        android:layout_height="50sp"
+                        android:layout_marginTop="100sp"
+                        android:text="See It"
+                        android:layout_gravity="center_horizontal"/>
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:layout_width="300sp"
+                    android:layout_height="600sp"
+                    android:layout_margin="30sp"
+                    android:id="@+id/cv2"
+                    android:backgroundTint="#CD75CD"/>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="300sp"
+                    android:layout_height="600sp"
+                    android:layout_margin="30sp"
+                    android:id="@+id/cv3"
+                    android:backgroundTint="#03A9F4"/>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="300sp"
+                    android:layout_height="600sp"
+                    android:layout_margin="30sp"
+                    android:id="@+id/cv4"
+                    android:backgroundTint="#00BCD4"/>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="300sp"
+                    android:layout_height="600sp"
+                    android:layout_margin="30sp"
+                    android:id="@+id/cv5"
+                    android:backgroundTint="#E91E63"/>
+            </LinearLayout>
+        </HorizontalScrollView>
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

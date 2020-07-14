@@ -21,4 +21,6 @@ public class Constant {
      *  Id Token issue
      */
     public static final String ID_TOKEN_ISSUE = "https://accounts.huawei.com";
+
+    public static final int MAX_TRACKING_ANCHOR_NUM = 16;
 }
