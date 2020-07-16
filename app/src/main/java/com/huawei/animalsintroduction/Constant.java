@@ -23,4 +23,7 @@ public class Constant {
     public static final String ID_TOKEN_ISSUE = "https://accounts.huawei.com";
 
     public static final int MAX_TRACKING_ANCHOR_NUM = 16;
+
+    // Ads Id
+    public static final String AD_ID = "testw6vs28auh3";
 }
