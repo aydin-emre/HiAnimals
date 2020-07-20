@@ -19,9 +19,9 @@ public class AnimalListActivity extends AppCompatActivity {
     CardView cv1;
     CardView cv2;
     CardView cv3;
-    CardView cv4;
-    CardView cv5;
-    Button btnShowAnimal;
+    Button btnShowDeer;
+    Button btnShowDog;
+    Button btnShowTiger;
     private static final String TAG = AnimalListActivity.class.getSimpleName();
 
 
@@ -34,12 +34,27 @@ public class AnimalListActivity extends AppCompatActivity {
         cv1 = findViewById(R.id.cv1);
         cv2 = findViewById(R.id.cv2);
         cv3 = findViewById(R.id.cv3);
-        cv4 = findViewById(R.id.cv4);
-        cv5 = findViewById(R.id.cv5);
 
-        btnShowAnimal = findViewById(R.id.btnShowAnimal);
-        btnShowAnimal.setOnClickListener(view -> {
-            startActivity(new Intent(AnimalListActivity.this, AnimalActivity.class));
+        btnShowDeer = findViewById(R.id.btnShowDeer);
+        btnShowDog = findViewById(R.id.btnShowDog);
+        btnShowTiger = findViewById(R.id.btnShowTiger);
+
+        btnShowDeer.setOnClickListener(view -> {
+            Intent intent = new Intent(this, AnimalActivity.class);
+            intent.putExtra("Type", 1);
+            startActivity(intent);
+        });
+
+        btnShowDog.setOnClickListener(view -> {
+            Intent intent = new Intent(this, AnimalActivity.class);
+            intent.putExtra("Type", 2);
+            startActivity(intent);
+        });
+
+        btnShowTiger.setOnClickListener(view -> {
+            Intent intent = new Intent(this, AnimalActivity.class);
+            intent.putExtra("Type", 3);
+            startActivity(intent);
         });
     }
 

@@ -16,7 +16,7 @@ public class VirtualObject {
 
     private static final int COLOR_SIZE = 4;
 
-    private static  float SCALE_FACTOR = 0.85f;
+    private static  float SCALE_FACTOR = 0.50f;
 
     private ARAnchor mArAnchor;
 

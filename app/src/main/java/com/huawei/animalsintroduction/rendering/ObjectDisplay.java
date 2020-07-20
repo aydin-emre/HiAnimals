@@ -51,7 +51,7 @@ import de.javagl.obj.ObjUtils;
  * @author HW
  * @since 2020-04-11
  */
-public class   ObjectDisplay {
+public class  ObjectDisplay {
     private static final String TAG = ObjectDisplay.class.getSimpleName();
 
     // Set the default light direction.
@@ -128,7 +128,7 @@ public class   ObjectDisplay {
      *
      * @param context Context.
      */
-    void init(Context context) {
+    void init(Context context, int type) {
         ShaderUtil.checkGlError(TAG, "Init start.");
         createProgram(context);
 
@@ -143,8 +143,18 @@ public class   ObjectDisplay {
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR_MIPMAP_LINEAR);
        // initGlTextureData(context);
         //initializeGlObjectData(context);
+
         try {
-            createOnGlThread(context, "deer.obj", "Diffuse.png");
+            switch (type){
+                case 1:
+                    createOnGlThread(context, "deer.obj", "Diffuse.png");
+                    break;
+                case 2:
+                    createOnGlThread(context, "dog.obj", "dog_diffuse.png");
+                    break;
+                case 3:
+                    createOnGlThread(context, "tiger.obj", "tiger_diffuse.png");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

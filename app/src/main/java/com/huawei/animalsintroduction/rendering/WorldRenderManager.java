@@ -86,6 +86,8 @@ public class WorldRenderManager implements GLSurfaceView.Renderer {
 
     private Context mContext;
 
+    private int mType;
+
     //private TextView mTextView;
 
     private TextView mSearchingTextView;
@@ -118,9 +120,10 @@ public class WorldRenderManager implements GLSurfaceView.Renderer {
      * @param activity Activity
      * @param context Context
      */
-    public WorldRenderManager(Activity activity, Context context) {
+    public WorldRenderManager(Activity activity, Context context, int type) {
         mActivity = activity;
         mContext = context;
+        mType = type;
      //   mTextView = activity.findViewById(R.id.wordTextView);
         mSearchingTextView = activity.findViewById(R.id.searchingTextView);
     }
@@ -179,7 +182,7 @@ public class WorldRenderManager implements GLSurfaceView.Renderer {
 
        // mLabelDisplay.init(getPlaneBitmaps());
 
-        mObjectDisplay.init(mContext);
+        mObjectDisplay.init(mContext, mType);
     }
 
     /**

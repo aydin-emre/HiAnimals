@@ -75,7 +75,9 @@ public class AnimalActivity extends Activity {
         // bits of the color buffer and the number of depth bits.
         mSurfaceView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
 
-        mWorldRenderManager = new WorldRenderManager(this, this);
+        int type = getIntent().getIntExtra("Type", -1);
+
+        mWorldRenderManager = new WorldRenderManager(this, this, type);
         mWorldRenderManager.setDisplayRotationManage(mDisplayRotationManager);
         mWorldRenderManager.setQueuedSingleTaps(mQueuedSingleTaps);
 
