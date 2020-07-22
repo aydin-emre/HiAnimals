@@ -154,6 +154,9 @@ public class  ObjectDisplay {
                     break;
                 case 3:
                     createOnGlThread(context, "tiger.obj", "tiger_diffuse.png");
+                    break;
+                case 4:
+                    createOnGlThread(context, "duck.obj", "duck_diffuse.jpg");
             }
         } catch (IOException e) {
             e.printStackTrace();

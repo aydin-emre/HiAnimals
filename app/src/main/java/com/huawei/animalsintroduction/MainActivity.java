@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.huawei.agconnect.auth.AGConnectAuth;
@@ -18,6 +19,7 @@ import com.huawei.hms.ads.banner.BannerView;
 
 public class MainActivity extends AppCompatActivity {
 
+    ImageView imageViewLogin;
     Button btnArPage, StartButton;
     TextView mainTitle;
     AGConnectAuth auth;
@@ -32,9 +34,11 @@ public class MainActivity extends AppCompatActivity {
 
         StartButton = findViewById(R.id.xxxx);
         btnArPage = findViewById(R.id.btnArPage);
+        imageViewLogin = findViewById(R.id.ivLogin);
 
         StartButton.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, LoginActivity.class)));
         btnArPage.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, AnimalListActivity.class)));
+        imageViewLogin.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, AnimalListActivity.class)));
 
         mainTitle = findViewById(R.id.main_title);
         mainTitle.setText((auth.getCurrentUser() != null) ? "Welcome, " + auth.getCurrentUser().getDisplayName() : "Welcome");
@@ -52,7 +56,11 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onStart() {
         super.onStart();
-        if (AGConnectAuth.getInstance().getCurrentUser() == null) {
+        Bundle bundle = getIntent().getExtras();
+        int value = -1; // or other values
+        if(bundle != null)
+            value = bundle.getInt("key");
+        if (AGConnectAuth.getInstance().getCurrentUser() == null && value == -1) {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
         }

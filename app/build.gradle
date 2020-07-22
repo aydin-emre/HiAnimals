@@ -6,6 +6,7 @@ android {
     buildToolsVersion "29.0.3"
 
     defaultConfig {
+
         applicationId "com.huawei.animalsintroduction"
         minSdkVersion 26
         targetSdkVersion 29
@@ -18,6 +19,8 @@ android {
             //abiFilters  "arm64-v8a"
             abiFilters "armeabi-v7a"
         }
+        multiDexEnabled true
+
     }
 
     signingConfigs {
@@ -40,12 +43,15 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
             signingConfig signingConfigs.release
             debuggable true
+            minifyEnabled true
+            shrinkResources true
         }
     }
     compileOptions {
@@ -59,6 +65,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation fileTree(include: ['*.aar'], dir: 'libs')
+    implementation 'com.android.support:multidex:1.0.3'  //with support libraries
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'

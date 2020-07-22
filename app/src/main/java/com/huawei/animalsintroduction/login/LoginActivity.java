@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
 
         findViewById(R.id.btn_huawei).setOnClickListener(v -> signInWithHuaweiAccount());
         findViewById(R.id.skipLabel).setOnClickListener(v -> signInWithAnonymousAccount());
-//        findViewById(R.id.btnLogin).setOnClickListener(v -> signInAccount());
+        findViewById(R.id.skipLabel).setOnClickListener(v -> skipLoginPage());
 
         //login page animation
         try {
@@ -73,36 +73,6 @@ public class LoginActivity extends AppCompatActivity {
             finish();
         }
     }
-
-//    private void signInAccount() {
-//        editName = (EditText) findViewById(R.id.txtEmailAddress);
-//        editPassword = (EditText) findViewById(R.id.txtPassword);
-//        lblEmailAnswer = (TextView) findViewById(R.id.lblEmailAnswer);
-//        lblPasswordAnswer = (TextView) findViewById(R.id.txtEmailAddress);
-//
-//        // get text from EditText name view
-//        String name = editName.getText().toString();
-//        // get text from EditText password view
-//        String password = editPassword.getText().toString();
-//
-//        LoginUser loginUser = new LoginUser(name, password);
-//        if (TextUtils.isEmpty(Objects.requireNonNull(loginUser).getStrEmailAddress())) {
-//            editName.setError("Enter an E-Mail Address");
-//            editName.requestFocus();
-//        } else if (!loginUser.isEmailValid()) {
-//            editName.setError("Enter a Valid E-mail Address");
-//            editName.requestFocus();
-//        } else if (TextUtils.isEmpty(Objects.requireNonNull(loginUser).getStrPassword())) {
-//            editPassword.setError("Enter a Password");
-//            editPassword.requestFocus();
-//        } else if (!loginUser.isPasswordLengthGreaterThan5()) {
-//            editPassword.setError("Enter at least 6 Digit password");
-//            editPassword.requestFocus();
-//        } else {
-//            lblEmailAnswer.setText(loginUser.getStrEmailAddress());
-//            lblPasswordAnswer.setText(loginUser.getStrPassword());
-//        }
-//    }
 
     private void signInWithHuaweiAccount() {
         HuaweiIdAuthParams authParams = new HuaweiIdAuthParamsHelper(HuaweiIdAuthParams.DEFAULT_AUTH_REQUEST_PARAM)
@@ -128,6 +98,15 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+    private void skipLoginPage() {
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+        Bundle bundle = new Bundle();
+        bundle.putInt("key", 1); //Your id
+        intent.putExtras(bundle); //Put your id to your next Intent
+        startActivity(intent);
+        finish();
+    }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -141,18 +120,6 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(this.getApplicationContext(), "Successfully User Name = " + huaweiAccount.getDisplayName(), Toast.LENGTH_LONG).show();
                 transmitTokenIntoAppGalleryConnect(huaweiAccount.getAccessToken());
 
-//                Thread thread = new Thread() {
-//                    @Override
-//                    public void run() {
-//                        try {
-//                            Thread.sleep(500); // As I am using LENGTH_LONG in Toast
-//                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                };
-//                thread.start();
 
             } else {
                 Log.i(TAG, "signIn failed: " + ((ApiException) authHuaweiIdTask.getException()).getStatusCode());
@@ -162,6 +129,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private void transmitTokenIntoAppGalleryConnect(String accessToken) {
         AGConnectAuthCredential credential = HwIdAuthProvider.credentialWithToken(accessToken);
+        Log.d(TAG, "accessToken: " + accessToken);
+        Log.d(TAG, "credential: " + credential);
         AGConnectAuth.getInstance().signIn(credential).addOnSuccessListener(new OnSuccessListener<SignInResult>() {
             @Override
             public void onSuccess(SignInResult signInResult) {
@@ -171,7 +140,7 @@ public class LoginActivity extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(Exception e) {
-                Log.d(TAG, "Error " + e);
+                Log.d(TAG, "Error: " + e);
             }
         });
     }

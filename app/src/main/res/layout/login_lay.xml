@@ -15,7 +15,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="62dp"
-        android:layout_marginTop="604dp"
+        android:layout_marginTop="368dp"
         android:layout_marginEnd="62dp"
         android:background="@drawable/corner_button"
         android:gravity="center"
@@ -23,16 +23,33 @@
         android:textColor="#effffb"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_anonym"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="62dp"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="62dp"
+        android:background="@drawable/corner_button"
+        android:gravity="center"
+        android:text="@string/login_with_anonym"
+        android:textColor="#effffb"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_huawei" />
 
     <TextView
         android:id="@+id/skipLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="8dp"
         android:inputType="textCapSentences"
         android:text="Skip"
@@ -40,7 +57,7 @@
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_huawei" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_anonym" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

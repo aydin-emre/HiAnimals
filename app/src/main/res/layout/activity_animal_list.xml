@@ -20,6 +20,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/background_button"
                 android:orientation="horizontal">
 
                 <androidx.cardview.widget.CardView
@@ -27,7 +28,7 @@
                     android:layout_height="600sp"
                     android:layout_margin="30sp"
                     android:id="@+id/cv1"
-                    android:backgroundTint="#FFFFFF">
+                    android:backgroundTint="#f6f6f6">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -47,18 +48,19 @@
                             android:layout_marginTop="@dimen/hiad_10_dp" />
                         <TextView
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="150dp"
                             android:textColor="#000000"
                             android:layout_gravity="center_horizontal"
                             android:textSize="@dimen/hiad_text_12_sp"
                             android:layout_marginTop="@dimen/hiad_10_dp"
                             android:layout_marginStart="@dimen/hiad_5_dp"
-                            android:text="Deer are the hoofed ruminant mammals forming the family Cervidae. The two main groups of deer are the Cervinae, including the muntjac, the elk (wapiti), the fallow deer, and the chital; and the Capreolinae, including the reindeer (caribou), the roe deer, and the moose. "/>
+                            android:text="@string/deer_string"/>
                     <Button
                         android:id="@+id/btnShowDeer"
                         android:layout_width="100sp"
                         android:layout_height="50sp"
-                        android:layout_marginTop="100sp"
+                        android:layout_marginTop="50sp"
+                        android:background="@drawable/select_button"
                         android:text="See It"
                         android:layout_gravity="center_horizontal"/>
 
@@ -69,7 +71,7 @@
                     android:layout_height="600sp"
                     android:layout_margin="30sp"
                     android:id="@+id/cv2"
-                    android:backgroundTint="#FFFFFF">
+                    android:backgroundTint="#f6f6f6">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -89,18 +91,19 @@
                             android:layout_marginTop="@dimen/hiad_10_dp" />
                         <TextView
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="150dp"
                             android:textColor="#000000"
                             android:layout_gravity="center_horizontal"
                             android:textSize="@dimen/hiad_text_12_sp"
                             android:layout_marginTop="@dimen/hiad_10_dp"
                             android:layout_marginStart="@dimen/hiad_5_dp"
-                            android:text="The dog is a domesticated carnivoran of the family Canidae. It is part of the wolf-like canids, and is the most widely abundant terrestrial carnivore. The dog and the extant gray wolf are sister taxa as modern wolves are not closely related to the wolves that were first domesticated, which implies that the direct ancestor of the dog is extinct."/>
+                            android:text="@string/dog_string"/>
                         <Button
                             android:id="@+id/btnShowDog"
                             android:layout_width="100sp"
                             android:layout_height="50sp"
-                            android:layout_marginTop="100sp"
+                            android:layout_marginTop="50sp"
+                            android:background="@drawable/select_button"
                             android:text="See It"
                             android:layout_gravity="center_horizontal"/>
 
@@ -112,7 +115,7 @@
                     android:layout_height="600sp"
                     android:layout_margin="30sp"
                     android:id="@+id/cv3"
-                    android:backgroundTint="#FFFFFF">
+                    android:backgroundTint="#f6f6f6">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -132,18 +135,64 @@
                             android:layout_marginTop="@dimen/hiad_10_dp" />
                         <TextView
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="150dp"
                             android:textColor="#000000"
                             android:layout_gravity="center_horizontal"
                             android:textSize="@dimen/hiad_text_12_sp"
                             android:layout_marginTop="@dimen/hiad_10_dp"
                             android:layout_marginStart="@dimen/hiad_5_dp"
-                            android:text="Tigers are a species of mammal in the genus Tigers, and are one of four members of the big cat family. He's the biggest cat in the panther genus. Easily recognizable by the dark vertical lines on the orange-brown fur. He's usually a superhunter who hunts hooves like deer and wild boar."/>
+                            android:text="@string/tiget_string"/>
                         <Button
                             android:id="@+id/btnShowTiger"
                             android:layout_width="100sp"
                             android:layout_height="50sp"
-                            android:layout_marginTop="100sp"
+                            android:layout_marginTop="50sp"
+                            android:background="@drawable/select_button"
+
+                            android:text="See It"
+                            android:layout_gravity="center_horizontal"/>
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:layout_width="300sp"
+                    android:layout_height="600sp"
+                    android:layout_margin="30sp"
+                    android:id="@+id/cv4"
+                    android:backgroundTint="#f6f6f6">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:layout_width="250sp"
+                            android:layout_height="250sp"
+                            android:layout_marginStart="20sp"
+                            android:src="@drawable/duck"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:text="Duck"
+                            android:textColor="#000000"
+                            android:textSize="@dimen/hiad_text_15_sp"
+                            android:layout_marginTop="@dimen/hiad_10_dp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="150dp"
+                            android:textColor="#000000"
+                            android:layout_gravity="center_horizontal"
+                            android:textSize="@dimen/hiad_text_12_sp"
+                            android:layout_marginTop="@dimen/hiad_10_dp"
+                            android:layout_marginStart="@dimen/hiad_5_dp"
+                            android:text="@string/duck_text"/>
+                        <Button
+                            android:id="@+id/btnShowDuck"
+                            android:layout_width="100sp"
+                            android:layout_height="50sp"
+                            android:layout_marginTop="50sp"
+                            android:background="@drawable/select_button"
+
                             android:text="See It"
                             android:layout_gravity="center_horizontal"/>
 

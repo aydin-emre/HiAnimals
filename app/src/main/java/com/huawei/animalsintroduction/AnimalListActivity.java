@@ -18,10 +18,10 @@ public class AnimalListActivity extends AppCompatActivity {
     HorizontalScrollView horizontalScrollView;
     CardView cv1;
     CardView cv2;
-    CardView cv3;
+    CardView cv3,cv4;
     Button btnShowDeer;
     Button btnShowDog;
-    Button btnShowTiger;
+    Button btnShowTiger,btnShowDuck;
     private static final String TAG = AnimalListActivity.class.getSimpleName();
 
 
@@ -34,10 +34,11 @@ public class AnimalListActivity extends AppCompatActivity {
         cv1 = findViewById(R.id.cv1);
         cv2 = findViewById(R.id.cv2);
         cv3 = findViewById(R.id.cv3);
-
+        cv4 = findViewById(R.id.cv4);
         btnShowDeer = findViewById(R.id.btnShowDeer);
         btnShowDog = findViewById(R.id.btnShowDog);
         btnShowTiger = findViewById(R.id.btnShowTiger);
+        btnShowDuck = findViewById(R.id.btnShowDuck);
 
         btnShowDeer.setOnClickListener(view -> {
             Intent intent = new Intent(this, AnimalActivity.class);
@@ -54,6 +55,11 @@ public class AnimalListActivity extends AppCompatActivity {
         btnShowTiger.setOnClickListener(view -> {
             Intent intent = new Intent(this, AnimalActivity.class);
             intent.putExtra("Type", 3);
+            startActivity(intent);
+        });
+        btnShowDuck.setOnClickListener(view -> {
+            Intent intent = new Intent(this, AnimalActivity.class);
+            intent.putExtra("Type", 4);
             startActivity(intent);
         });
     }

@@ -9,5 +9,10 @@
     <string name="arengine_cancel" priority="translator">CANCEL</string>
     <string name="arengine_install" priority="translator">INSTALL</string>
     <string name="arengine_install_app" priority="translator">Install the latest version of HUAWEI AR Engine to continue.</string>
+    <string name="login_with_anonym">Anonymous User</string>
+    <string name="duck_text">Duck is the common name for numerous species in the waterfowl family Anatidae which also includes swans and geese. Ducks are divided among several subfamilies in the family Anatidae; they do not represent a monophyletic group (the group of all descendants of a single common ancestral species) but a form taxon, since swans and geese are not considered ducks. Ducks are mostly aquatic birds, mostly smaller than the swans and geese, and may be found in both fresh water and sea water.</string>
+    <string name="tiget_string">Tigers are a species of mammal in the genus Tigers, and are one of four members of the big cat family. He\'s the biggest cat in the panther genus. Easily recognizable by the dark vertical lines on the orange-brown fur. He\'s usually a superhunter who hunts hooves like deer and wild boar.</string>
+    <string name="dog_string">The dog is a domesticated carnivoran of the family Canidae. It is part of the wolf-like canids, and is the most widely abundant terrestrial carnivore. The dog and the extant gray wolf are sister taxa as modern wolves are not closely related to the wolves that were first domesticated, which implies that the direct ancestor of the dog is extinct.</string>
+    <string name="deer_string">Deer are the hoofed ruminant mammals forming the family Cervidae. The two main groups of deer are the Cervinae, including the muntjac, the elk (wapiti), the fallow deer, and the chital; and the Capreolinae, including the reindeer (caribou), the roe deer, and the moose.</string>
 
 </resources>
