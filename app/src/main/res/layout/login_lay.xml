@@ -10,6 +10,17 @@
     android:isScrollContainer="true"
     tools:context=".login.LoginActivity">
 
+
+    <ImageView
+        android:id="@+id/ivLogin"
+        android:layout_width="300sp"
+        android:layout_height="300sp"
+        android:src="@drawable/login"
+        app:layout_constraintBottom_toTopOf="@id/btn_huawei"
+        app:layout_constraintHorizontal_bias="0.144"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
     <Button
         android:id="@+id/btn_huawei"
         android:layout_width="0dp"

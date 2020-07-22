@@ -3,26 +3,18 @@ package com.huawei.animalsintroduction.login;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.widget.NestedScrollView;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.huawei.agconnect.auth.AGConnectAuth;
 import com.huawei.agconnect.auth.AGConnectAuthCredential;
 import com.huawei.agconnect.auth.HwIdAuthProvider;
 import com.huawei.agconnect.auth.SignInResult;
+import com.huawei.animalsintroduction.AnimalListActivity;
 import com.huawei.animalsintroduction.Constant;
-import com.huawei.animalsintroduction.MainActivity;
 import com.huawei.animalsintroduction.R;
 import com.huawei.hmf.tasks.OnFailureListener;
 import com.huawei.hmf.tasks.OnSuccessListener;
@@ -33,9 +25,6 @@ import com.huawei.hms.support.hwid.request.HuaweiIdAuthParams;
 import com.huawei.hms.support.hwid.request.HuaweiIdAuthParamsHelper;
 import com.huawei.hms.support.hwid.result.AuthHuaweiId;
 import com.huawei.hms.support.hwid.service.HuaweiIdAuthService;
-
-import java.util.Objects;
-
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -69,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         if (AGConnectAuth.getInstance().getCurrentUser() != null) {
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            startActivity(new Intent(LoginActivity.this, AnimalListActivity.class));
             finish();
         }
     }
@@ -87,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
         AGConnectAuth.getInstance().signInAnonymously().addOnSuccessListener(new OnSuccessListener<SignInResult>() {
             @Override
             public void onSuccess(SignInResult signInResult) {
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                startActivity(new Intent(LoginActivity.this, AnimalListActivity.class));
                 finish();
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -99,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
     private void skipLoginPage() {
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        Intent intent = new Intent(LoginActivity.this, AnimalListActivity.class);
         startActivity(intent);
         Bundle bundle = new Bundle();
         bundle.putInt("key", 1); //Your id
@@ -119,6 +108,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 Toast.makeText(this.getApplicationContext(), "Successfully User Name = " + huaweiAccount.getDisplayName(), Toast.LENGTH_LONG).show();
                 transmitTokenIntoAppGalleryConnect(huaweiAccount.getAccessToken());
+                startActivity(new Intent(LoginActivity.this, AnimalListActivity.class));
+                finish();
 
 
             } else {
@@ -134,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
         AGConnectAuth.getInstance().signIn(credential).addOnSuccessListener(new OnSuccessListener<SignInResult>() {
             @Override
             public void onSuccess(SignInResult signInResult) {
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                startActivity(new Intent(LoginActivity.this, AnimalListActivity.class));
                 finish();
             }
         }).addOnFailureListener(new OnFailureListener() {
