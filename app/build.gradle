@@ -50,8 +50,8 @@ android {
         debug {
             signingConfig signingConfigs.release
             debuggable true
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
+            shrinkResources false
         }
     }
     compileOptions {
@@ -76,6 +76,8 @@ dependencies {
     implementation 'com.huawei.hms:hwid:4.0.4.300'
     implementation 'com.huawei.hms:ads-lite:13.4.30.307'
     implementation 'com.huawei.hms:push:4.0.3.301'
+
+    implementation 'com.huawei.agconnect:agconnect-database:1.2.1.301'
 
     implementation 'com.huawei.hms:arenginesdk:2.12.0.1'
     implementation 'de.javagl:obj:0.3.0'

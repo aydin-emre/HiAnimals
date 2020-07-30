@@ -22,6 +22,7 @@ public class MatrixUtil {
 
             // Calculate the orthographic projection matrix.
             Matrix.orthoM(projection, 0, -1, 1, -1, 1, 1, 3);
+            // Set the camera position (View matrix)
             Matrix.setLookAtM(camera, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0);
             Matrix.multiplyMM(matrix, 0, projection, 0, camera, 0);
         }

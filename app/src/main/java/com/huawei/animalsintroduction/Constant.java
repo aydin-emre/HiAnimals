@@ -26,4 +26,6 @@ public class Constant {
 
     // Ads Id
     public static final String AD_ID = "testw6vs28auh3";
+
+    public static final String DB_ZONE_WRAPPER  = "DB_ZONE_WRAPPER";
 }

@@ -3,19 +3,25 @@ package com.huawei.animalsintroduction.login;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.huawei.agconnect.auth.AGConnectAuth;
 import com.huawei.agconnect.auth.AGConnectAuthCredential;
+import com.huawei.agconnect.auth.AGConnectUser;
 import com.huawei.agconnect.auth.HwIdAuthProvider;
 import com.huawei.agconnect.auth.SignInResult;
 import com.huawei.animalsintroduction.AnimalListActivity;
+import com.huawei.animalsintroduction.CloudDBZoneWrapper;
 import com.huawei.animalsintroduction.Constant;
 import com.huawei.animalsintroduction.R;
+import com.huawei.animalsintroduction.model.User;
 import com.huawei.hmf.tasks.OnFailureListener;
 import com.huawei.hmf.tasks.OnSuccessListener;
 import com.huawei.hmf.tasks.Task;
@@ -26,17 +32,32 @@ import com.huawei.hms.support.hwid.request.HuaweiIdAuthParamsHelper;
 import com.huawei.hms.support.hwid.result.AuthHuaweiId;
 import com.huawei.hms.support.hwid.service.HuaweiIdAuthService;
 
-public class LoginActivity extends AppCompatActivity {
+import java.util.List;
+
+public class LoginActivity extends AppCompatActivity implements CloudDBZoneWrapper.UiCallBack{
 
     private static final String TAG = "Account Service";
 //    EditText editName, editPassword;
 //    TextView lblEmailAnswer, lblPasswordAnswer;
 //    ViewModelProvider.Factory viewModelFactory;
 
+    private CloudDBZoneWrapper mCloudDBZoneWrapper;
+    private MyHandler mHandler = new MyHandler();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_lay);
+
+        CloudDBZoneWrapper.initAGConnectCloudDB(getApplicationContext());
+
+        mCloudDBZoneWrapper = new CloudDBZoneWrapper();
+
+        mHandler.post(() -> {
+            mCloudDBZoneWrapper.addCallBacks(LoginActivity.this);
+            mCloudDBZoneWrapper.createObjectType();
+            mCloudDBZoneWrapper.openCloudDBZone();
+        });
 
         findViewById(R.id.btn_huawei).setOnClickListener(v -> signInWithHuaweiAccount());
         findViewById(R.id.skipLabel).setOnClickListener(v -> signInWithAnonymousAccount());
@@ -79,12 +100,9 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginActivity.this, AnimalListActivity.class));
                 finish();
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(Exception e) {
-                Log.d(TAG, "Error " + e);
-                Toast.makeText(LoginActivity.this, "Login with Anonymous Account Failed", Toast.LENGTH_SHORT).show();
-            }
+        }).addOnFailureListener(e -> {
+            Log.d(TAG, "Error " + e);
+            Toast.makeText(LoginActivity.this, "Login with Anonymous Account Failed", Toast.LENGTH_SHORT).show();
         });
     }
     private void skipLoginPage() {
@@ -95,6 +113,33 @@ public class LoginActivity extends AppCompatActivity {
         intent.putExtras(bundle); //Put your id to your next Intent
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onAddOrQuery(List<User> userList) {
+
+    }
+
+    @Override
+    public void isLastID(int lastID) {
+
+    }
+
+    @Override
+    public void isDataUpsert(Boolean state) {
+
+    }
+
+    @Override
+    public void updateUiOnError(String errorMessage) {
+
+    }
+
+    private static final class MyHandler extends Handler {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            // dummy
+        }
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -108,9 +153,6 @@ public class LoginActivity extends AppCompatActivity {
 
                 Toast.makeText(this.getApplicationContext(), "Successfully User Name = " + huaweiAccount.getDisplayName(), Toast.LENGTH_LONG).show();
                 transmitTokenIntoAppGalleryConnect(huaweiAccount.getAccessToken());
-                startActivity(new Intent(LoginActivity.this, AnimalListActivity.class));
-                finish();
-
 
             } else {
                 Log.i(TAG, "signIn failed: " + ((ApiException) authHuaweiIdTask.getException()).getStatusCode());
@@ -125,15 +167,17 @@ public class LoginActivity extends AppCompatActivity {
         AGConnectAuth.getInstance().signIn(credential).addOnSuccessListener(new OnSuccessListener<SignInResult>() {
             @Override
             public void onSuccess(SignInResult signInResult) {
+                AGConnectUser user1 = AGConnectAuth.getInstance().getCurrentUser();
+                String currentUID = user1.getUid();
+                Log.w("PROFILE_TAG", "GIVE DETAIL : AGConnectUser UID : " + currentUID);
+                User u = new User(signInResult.getUser().getUid(), accessToken, signInResult.getUser().getDisplayName());
+                mCloudDBZoneWrapper.insertUser(u);
+
+                mCloudDBZoneWrapper.closeCloudDBZone();
                 startActivity(new Intent(LoginActivity.this, AnimalListActivity.class));
                 finish();
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(Exception e) {
-                Log.d(TAG, "Error: " + e);
-            }
-        });
+        }).addOnFailureListener(e -> Log.d(TAG, "Error: " + e));
     }
 
 }

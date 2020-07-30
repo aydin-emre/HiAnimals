@@ -350,9 +350,6 @@ public class  ObjectDisplay {
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
         ShaderUtil.checkGlError(TAG, "onDrawFrame end.");
 
-
-
-
     }
 
     /**
