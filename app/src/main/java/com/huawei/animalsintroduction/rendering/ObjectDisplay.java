@@ -1,19 +1,3 @@
-/**
- * Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- */
-
 package com.huawei.animalsintroduction.rendering;
 
 import android.content.Context;
@@ -22,12 +6,10 @@ import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
 import android.opengl.GLUtils;
 import android.opengl.Matrix;
-import android.util.Log;
 import android.view.MotionEvent;
 
 import com.huawei.animalsintroduction.Constant;
 import com.huawei.animalsintroduction.R;
-import com.huawei.animalsintroduction.VirtualObject;
 import com.huawei.animalsintroduction.common.MatrixUtil;
 import com.huawei.animalsintroduction.common.ShaderUtil;
 
@@ -38,7 +20,6 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
-import java.util.Optional;
 
 import de.javagl.obj.Obj;
 import de.javagl.obj.ObjData;
@@ -56,10 +37,6 @@ public class  ObjectDisplay {
 
     // Set the default light direction.
     private static final float[] LIGHT_DIRECTIONS = new float[]{0.0f, 1.0f, 0.0f, 0.0f};
-
-    private static final int FLOAT_BYTE_SIZE = 4;
-
-    private static final int INDEX_COUNT_RATIO = 2;
 
     private static final int MATRIX_SIZE = 16;
 
@@ -109,6 +86,9 @@ public class  ObjectDisplay {
 
     private float mHeight;
 
+    private float[] mModelMatrix = new float[Constant.MAX_TRACKING_ANCHOR_NUM];
+
+    private int mMaterialParametersUniform;
 
     /**
      * If the surface size is changed, update the changed size of the record synchronously.
@@ -130,8 +110,6 @@ public class  ObjectDisplay {
      */
     void init(Context context, int type) {
         ShaderUtil.checkGlError(TAG, "Init start.");
-        createProgram(context);
-
         // Coordinate and index.
         int[] buffers = new int[2];
         GLES20.glGenBuffers(2, buffers, 0);
@@ -141,8 +119,6 @@ public class  ObjectDisplay {
         GLES20.glGenTextures(mTextures.length, mTextures, 0);
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextures[0]);
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR_MIPMAP_LINEAR);
-       // initGlTextureData(context);
-        //initializeGlObjectData(context);
 
         try {
             switch (type){
@@ -162,123 +138,6 @@ public class  ObjectDisplay {
             e.printStackTrace();
         }
         ShaderUtil.checkGlError(TAG, "Init end.");
-    }
-
-    private void createProgram(Context context) {
-
-        ShaderUtil.checkGlError(TAG, "Create program start.");
-        mGlProgram = WorldShaderUtil.getObjectProgram();
-        mModelViewUniform = GLES20.glGetUniformLocation(mGlProgram, "inViewMatrix");
-        mModelViewProjectionUniform = GLES20.glGetUniformLocation(mGlProgram, "inMVPMatrix");
-        mPositionAttribute = GLES20.glGetAttribLocation(mGlProgram, "inObjectPosition");
-        mNormalAttribute = GLES20.glGetAttribLocation(mGlProgram, "inObjectNormalVector");
-        mTexCoordAttribute = GLES20.glGetAttribLocation(mGlProgram, "inTexCoordinate");
-        mTextureUniform = GLES20.glGetUniformLocation(mGlProgram, "inObjectTexture");
-        mLightingParametersUniform = GLES20.glGetUniformLocation(mGlProgram, "inLight");
-        mColorUniform = GLES20.glGetUniformLocation(mGlProgram, "inObjectColor");
-        Matrix.setIdentityM(mModelMatrixs, 0);
-        ShaderUtil.checkGlError(TAG, "Create program end.");
-    }
-
-    private void initGlTextureData(Context context) {
-        ShaderUtil.checkGlError(TAG, "Init gl texture data start.");
-        Bitmap textureBitmap;
-        try (InputStream inputStream = context.getAssets().open("Diffuse.png")) {
-            textureBitmap = BitmapFactory.decodeStream(inputStream);
-        } catch (IllegalArgumentException | IOException e) {
-            Log.e(TAG, "Get data error!");
-            return;
-        }
-        GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, textureBitmap, 0);
-        GLES20.glGenerateMipmap(GLES20.GL_TEXTURE_2D);
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
-        textureBitmap.recycle();
-        ShaderUtil.checkGlError(TAG, "Init gl texture data end.");
-    }
-
-    private void initializeGlObjectData(Context context) {
-        ObjectData objectData = null;
-        Optional<ObjectData> objectDataOptional = readObject(context);
-        if (objectDataOptional.isPresent()) {
-            objectData = objectDataOptional.get();
-        } else {
-            Log.e(TAG, "Read object error.");
-            return;
-        }
-        mTexCoordsBaseAddress = FLOAT_BYTE_SIZE * objectData.objectIndices.limit();
-        mNormalsBaseAddress = mTexCoordsBaseAddress + FLOAT_BYTE_SIZE * objectData.texCoords.limit();
-        final int totalBytes = mNormalsBaseAddress + FLOAT_BYTE_SIZE * objectData.normals.limit();
-        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, mVertexBufferId);
-        GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, totalBytes, null, GLES20.GL_STATIC_DRAW);
-        GLES20.glBufferSubData(
-            GLES20.GL_ARRAY_BUFFER, 0, FLOAT_BYTE_SIZE * objectData.objectVertices.limit(), objectData.objectVertices);
-        GLES20.glBufferSubData(GLES20.GL_ARRAY_BUFFER, mTexCoordsBaseAddress,
-            FLOAT_BYTE_SIZE * objectData.texCoords.limit(), objectData.texCoords);
-        GLES20.glBufferSubData(GLES20.GL_ARRAY_BUFFER, mNormalsBaseAddress,
-            FLOAT_BYTE_SIZE * objectData.normals.limit(), objectData.normals);
-        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
-        GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, mIndexBufferId);
-        mIndexCount = objectData.indices.limit();
-        GLES20.glBufferData(
-            GLES20.GL_ELEMENT_ARRAY_BUFFER, INDEX_COUNT_RATIO * mIndexCount, objectData.indices, GLES20.GL_STATIC_DRAW);
-        GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, 0);
-        ShaderUtil.checkGlError(TAG, "obj buffer load");
-    }
-
-    private Optional<ObjectData> readObject(Context context) {
-        Obj obj;
-        try (InputStream objInputStream = context.getAssets().open("deer.obj")) {
-            obj = ObjReader.read(objInputStream);
-            obj = ObjUtils.convertToRenderable(obj);
-        } catch (IllegalArgumentException | IOException e) {
-            Log.e(TAG, "Get data failed!");
-            return Optional.empty();
-        }
-
-        // Every surface of an object has three vertices.
-        IntBuffer objectIndices = ObjData.getFaceVertexIndices(obj, 3);
-        FloatBuffer objectVertices = ObjData.getVertices(obj);
-
-        calculateBoundingBox(objectVertices);
-
-        // Size of the allocated buffer.
-        ShortBuffer indices = ByteBuffer.allocateDirect(2 * objectIndices.limit())
-            .order(ByteOrder.nativeOrder()).asShortBuffer();
-        while (objectIndices.hasRemaining()) {
-            indices.put((short) objectIndices.get());
-        }
-        indices.rewind();
-
-        // The dimension of the texture coordinate is 2.
-        FloatBuffer texCoordinates = ObjData.getTexCoords(obj, 2);
-        FloatBuffer normals = ObjData.getNormals(obj);
-        return Optional.of(new ObjectData(objectIndices, objectVertices, indices, texCoordinates, normals));
-    }
-
-    /**
-     * The virtual object data class.
-     *
-     * @author HW
-     * @since 2020-04-11
-     */
-    private static class ObjectData {
-        IntBuffer objectIndices;
-        FloatBuffer objectVertices;
-        ShortBuffer indices;
-        FloatBuffer texCoords;
-        FloatBuffer normals;
-
-        ObjectData(IntBuffer objectIndices,
-            FloatBuffer objectVertices,
-            ShortBuffer indices,
-            FloatBuffer texCoords,
-            FloatBuffer normals) {
-            this.objectIndices = objectIndices;
-            this.objectVertices = objectVertices;
-            this.indices = indices;
-            this.texCoords = texCoords;
-            this.normals = normals;
-        }
     }
 
     /**
@@ -308,10 +167,6 @@ public class  ObjectDisplay {
         // Light direction.
         GLES20.glUniform4f(mLightingParametersUniform,
             mViewLightDirections[0], mViewLightDirections[1], mViewLightDirections[2], lightIntensity);
-        float[] objColors = obj.getColor();;
-
-       // GLES20.glUniform4fv(mColorUniform, 1, objColors, 0);
-
 
         // Set the object color property.
         GLES20.glUniform4f(mMaterialParametersUniform, mAmbient, mDiffuse, mSpecular, mSpecularPower);
@@ -632,9 +487,5 @@ public class  ObjectDisplay {
 
         Matrix.setIdentityM(mModelMatrix, 0);
     }
-
-    private float[] mModelMatrix = new float[Constant.MAX_TRACKING_ANCHOR_NUM];
-
-    private int mMaterialParametersUniform;
 
 }

@@ -18,6 +18,7 @@ package com.huawei.animalsintroduction.rendering;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
@@ -28,12 +29,13 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.huawei.animalsintroduction.CloudDBZoneWrapper;
 import com.huawei.animalsintroduction.GestureEvent;
 import com.huawei.animalsintroduction.R;
-import com.huawei.animalsintroduction.VirtualObject;
 import com.huawei.animalsintroduction.common.ArDemoRuntimeException;
 import com.huawei.animalsintroduction.common.DisplayRotationManager;
 import com.huawei.animalsintroduction.common.TextureDisplay;
+import com.huawei.animalsintroduction.model.Photo;
 import com.huawei.hiar.ARCamera;
 import com.huawei.hiar.ARFrame;
 import com.huawei.hiar.ARHitResult;
@@ -44,9 +46,12 @@ import com.huawei.hiar.ARPose;
 import com.huawei.hiar.ARSession;
 import com.huawei.hiar.ARTrackable;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.BufferUnderflowException;
+import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -57,8 +62,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 /**
- * This class provides rendering management related to the world scene, including
- * label rendering and virtual object rendering management.
+ * This class provides rendering management related to virtual object rendering management.
  *
  * @author HW
  * @since 2020-03-21
@@ -88,8 +92,6 @@ public class WorldRenderManager implements GLSurfaceView.Renderer {
 
     private int mType;
 
-    //private TextView mTextView;
-
     private TextView mSearchingTextView;
 
     private int frames = 0;
@@ -99,10 +101,6 @@ public class WorldRenderManager implements GLSurfaceView.Renderer {
     private float fps;
 
     private TextureDisplay mTextureDisplay = new TextureDisplay();
-
-   // private TextDisplay mTextDisplay = new TextDisplay();
-
-    ///private LabelDisplay mLabelDisplay = new LabelDisplay();
 
     private ObjectDisplay mObjectDisplay = new ObjectDisplay();
 
@@ -114,6 +112,8 @@ public class WorldRenderManager implements GLSurfaceView.Renderer {
 
     private VirtualObject mSelectedObj = null;
 
+    private CloudDBZoneWrapper mCloudDBZoneWrapper;
+
     /**
      * The constructor passes context and activity. This method will be called when {@link Activity}.
      *
@@ -124,7 +124,6 @@ public class WorldRenderManager implements GLSurfaceView.Renderer {
         mActivity = activity;
         mContext = context;
         mType = type;
-     //   mTextView = activity.findViewById(R.id.wordTextView);
         mSearchingTextView = activity.findViewById(R.id.searchingTextView);
     }
 
@@ -157,9 +156,9 @@ public class WorldRenderManager implements GLSurfaceView.Renderer {
     /**
      * Set the DisplayRotationManage object, which will be used in onSurfaceChanged and onDrawFrame.
      *
-     * @param displayRotationManager DisplayRotationManage is a customized object.
+     * @param displayRotationManager DisplayRotationManager is a customized object.
      */
-    public void setDisplayRotationManage(DisplayRotationManager displayRotationManager) {
+    public void setDisplayRotationManager(DisplayRotationManager displayRotationManager) {
         if (displayRotationManager == null) {
             Log.e(TAG, "SetDisplayRotationManage error, displayRotationManage is null!");
             return;
@@ -173,42 +172,8 @@ public class WorldRenderManager implements GLSurfaceView.Renderer {
         GLES20.glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
         mTextureDisplay.init();
-     /*   mTextDisplay.setListener(new TextDisplay.OnTextInfoChangeListener() {
-            @Override
-            public void textInfoChanged(String text, float positionX, float positionY) {
-                showWorldTypeTextView(text, positionX, positionY);
-            }
-        });*/
-
-       // mLabelDisplay.init(getPlaneBitmaps());
-
         mObjectDisplay.init(mContext, mType);
     }
-
-    /**
-     * Create a thread for text display in the UI thread. This thread will be called back in TextureDisplay.
-     *
-     * @param //text Gesture information displayed on the screen
-     * @param //positionX The left padding in pixels.
-     * @param //positionY The right padding in pixels.
-     */
-  /*  private void showWorldTypeTextView(final String text, final float positionX, final float positionY) {
-        mActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mTextView.setTextColor(Color.WHITE);
-
-                // Set the font size to be displayed on the screen.
-                mTextView.setTextSize(10f);
-                if (text != null) {
-                    mTextView.setText(text);
-                    mTextView.setPadding((int) positionX, (int) positionY, 0, 0);
-                } else {
-                    mTextView.setText("");
-                }
-            }
-        });
-    }*/
 
     @Override
     public void onSurfaceChanged(GL10 unused, int width, int height) {
@@ -241,9 +206,6 @@ public class WorldRenderManager implements GLSurfaceView.Renderer {
 
             arCamera.getProjectionMatrix(projectionMatrix, PROJ_MATRIX_OFFSET, PROJ_MATRIX_NEAR, PROJ_MATRIX_FAR);
             mTextureDisplay.onDrawFrame(arFrame);
-            StringBuilder sb = new StringBuilder();
-            updateMessageData(sb);
-          //  mTextDisplay.onDrawFrame(sb);
 
             // The size of ViewMatrix is 4 * 4.
             float[] viewMatrix = new float[16];
@@ -255,7 +217,6 @@ public class WorldRenderManager implements GLSurfaceView.Renderer {
                     break;
                 }
             }
-           // mLabelDisplay.onDrawFrame(mSession.getAllTrackables(ARPlane.class), arCamera.getDisplayOrientedPose(),projectionMatrix);
             handleGestureEvent(arFrame, arCamera, projectionMatrix, viewMatrix);
             ARLightEstimate lightEstimate = arFrame.getLightEstimate();
             float lightPixelIntensity = 1;
@@ -295,63 +256,11 @@ public class WorldRenderManager implements GLSurfaceView.Renderer {
         }
     }
 
-   /* private ArrayList<Bitmap> getPlaneBitmaps() {
-        ArrayList<Bitmap> bitmaps = new ArrayList<>();
-        bitmaps.add(getPlaneBitmap(R.id.plane_other));
-        bitmaps.add(getPlaneBitmap(R.id.plane_wall));
-        bitmaps.add(getPlaneBitmap(R.id.plane_floor));
-        bitmaps.add(getPlaneBitmap(R.id.plane_seat));
-        bitmaps.add(getPlaneBitmap(R.id.plane_table));
-        bitmaps.add(getPlaneBitmap(R.id.plane_ceiling));
-        return bitmaps;
-    }*/
-
-   /* private Bitmap getPlaneBitmap(int id) {
-        TextView view = mActivity.findViewById(id);
-        view.setDrawingCacheEnabled(true);
-        view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
-        Bitmap bitmap = view.getDrawingCache();
-        android.graphics.Matrix matrix = new android.graphics.Matrix();
-        matrix.setScale(MATRIX_SCALE_SX, MATRIX_SCALE_SY);
-        if (bitmap != null) {
-            bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-        }
-        return bitmap;
-    }*/
-
-    /**
-     * Update the information to be displayed on the screen.
-     *
-     * @param sb String buffer.
-     */
-    private void updateMessageData(StringBuilder sb) {
-        float fpsResult = doFpsCalculate();
-        sb.append("FPS=").append(fpsResult).append(System.lineSeparator());
-    }
-
-    private float doFpsCalculate() {
-        ++frames;
-        long timeNow = System.currentTimeMillis();
-
-        // Convert millisecond to second.
-        if (((timeNow - lastInterval) / 1000.0f) > 0.5f) {
-            fps = frames / ((timeNow - lastInterval) / 1000.0f);
-            frames = 0;
-            lastInterval = timeNow;
-        }
-        return fps;
-    }
-
     private void hideLoadingMessage() {
-        mActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (mSearchingTextView != null) {
-                    mSearchingTextView.setVisibility(View.GONE);
-                    mSearchingTextView = null;
-                }
+        mActivity.runOnUiThread(() -> {
+            if (mSearchingTextView != null) {
+                mSearchingTextView.setVisibility(View.GONE);
+                mSearchingTextView = null;
             }
         });
     }
@@ -400,18 +309,6 @@ public class WorldRenderManager implements GLSurfaceView.Renderer {
                 doWhenEventTypeSingleTap(hitResult);
                 break;
             }
-            case GestureEvent.GESTURE_EVENT_TYPE_PINCH: {
-                // Do not perform anything when an object is selected.
-                if (mSelectedObj == null) {
-                    return;
-                }
-
-                ARHitResult hitResult = null;
-                MotionEvent tap = event.getEventFirst();
-                hitResult = hitTest4Result(arFrame, arCamera, tap);
-                doWhenEventTypePinch(hitResult);
-                break;
-            }
             default: {
                 Log.e(TAG, "Unknown motion event type, and do nothing.");
             }
@@ -440,35 +337,8 @@ public class WorldRenderManager implements GLSurfaceView.Renderer {
             mVirtualObjects.remove(0);
         }
 
-        ARTrackable currentTrackable = hitResult.getTrackable();
-
-      /*  if (currentTrackable instanceof ARPoint) {
-            mVirtualObjects.add(new VirtualObject(hitResult.createAnchor(), BLUE_COLORS));
-        } else if (currentTrackable instanceof ARPlane) {
-            mVirtualObjects.add(new VirtualObject(hitResult.createAnchor(), GREEN_COLORS));
-        } else {
-            Log.i(TAG, "Hit result is not plane or point.");
-        }*/
-
          float[] DEFAULT_COLOR = new float[] {0f, 0f, 0f, 0f};
         mVirtualObjects.add(new VirtualObject(hitResult.createAnchor(), DEFAULT_COLOR));
-    }
-
-    private void doWhenEventTypePinch(ARHitResult hitResult) {
-        // The hit results are sorted by distance. Only the nearest hit point is valid.
-        // Set the number of stored objects to 10 to avoid the overload of rendering and AR Engine.
-        if (mVirtualObjects.size() >= 16) {
-            mVirtualObjects.get(0).getAnchor().detach();
-            mVirtualObjects.remove(0);
-        }
-
-
-
-        mSelectedObj.setScaleFactor(3.0f);
-        mVirtualObjects.remove(0);
-        mVirtualObjects.add(new VirtualObject(hitResult.createAnchor(), BLUE_COLORS));
-
-
     }
 
     private ARHitResult hitTest4Result(ARFrame frame, ARCamera camera, MotionEvent event) {
@@ -523,13 +393,14 @@ public class WorldRenderManager implements GLSurfaceView.Renderer {
             + (cameraPose.tz() - planePose.tz()) * normals[2]; // 2:z
     }
 
-    public void takePhoto(Context mContext){
+    public void takePhoto(Context mContext, CloudDBZoneWrapper mCloudDBZoneWrapper){
 
         // Here just a set a flag so we can copy
         // the image from the onDrawFrame() method.
         // This is required for OpenGL so we are on the rendering thread.
         Toast.makeText(mContext, "Photo is captured", Toast.LENGTH_LONG).show();
         this.capturePicture = true;
+        this.mCloudDBZoneWrapper = mCloudDBZoneWrapper;
     }
 
     private int mWidth;
@@ -548,10 +419,11 @@ public class WorldRenderManager implements GLSurfaceView.Renderer {
         GLES20.glReadPixels(0, 0, mWidth, mHeight,
                 GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, buf);
 
-        // Create a file in the Pictures/HelloAR album.
+        String date = Long.toHexString(System.currentTimeMillis());
+        // Create a file in the Pictures/AnimalsIntro album.
         final File out = new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES) + "/AnimalsIntro", "Img" +
-                Long.toHexString(System.currentTimeMillis()) + ".png");
+                date + ".png");
 
         // Make sure the directory exists
         if (!out.getParentFile().exists()) {
@@ -578,6 +450,16 @@ public class WorldRenderManager implements GLSurfaceView.Renderer {
         bmp.compress(Bitmap.CompressFormat.PNG, 100, fos);
         fos.flush();
         fos.close();
+
+        //Add photo to Huawei Cloud DB
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        bmp.recycle();
+        SharedPreferences pref = mContext.getSharedPreferences("MyPref", mContext.MODE_PRIVATE);
+        Photo p = new Photo(pref.getString("token", null), byteArray, date);
+        mCloudDBZoneWrapper.insertPhoto(p);
+
     }
 
 }

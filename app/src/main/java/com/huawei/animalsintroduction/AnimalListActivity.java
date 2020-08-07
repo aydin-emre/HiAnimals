@@ -6,9 +6,9 @@ import androidx.cardview.widget.CardView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.huawei.animalsintroduction.common.PermissionManager;
@@ -16,9 +16,7 @@ import com.huawei.animalsintroduction.common.PermissionManager;
 public class AnimalListActivity extends AppCompatActivity {
 
     HorizontalScrollView horizontalScrollView;
-    CardView cv1;
-    CardView cv2;
-    CardView cv3,cv4;
+    CardView cv1, cv2, cv3,cv4;
     Button btnShowDeer;
     Button btnShowDog;
     Button btnShowTiger,btnShowDuck;

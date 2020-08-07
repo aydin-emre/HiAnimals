@@ -5,13 +5,7 @@
 package com.huawei.animalsintroduction.model;
 
 import com.huawei.agconnect.cloud.database.CloudDBZoneObject;
-import com.huawei.agconnect.cloud.database.annotations.DefaultValue;
-import com.huawei.agconnect.cloud.database.Text;
-import com.huawei.agconnect.cloud.database.annotations.NotNull;
-import com.huawei.agconnect.cloud.database.annotations.IsIndex;
 import com.huawei.agconnect.cloud.database.annotations.PrimaryKey;
-
-import java.util.Date;
 
 /**
  * Definition of ObjectType Photo.
@@ -19,49 +13,43 @@ import java.util.Date;
  * @since 2020-07-29
  */
 public class Photo extends CloudDBZoneObject {
+    private String token;
+
+    private byte[] photo;
+
     @PrimaryKey
-    private Integer id;
-
-    private Integer user_id;
-
-    private String path;
-
-    private Date date;
+    private String  id;
 
     public Photo() {
         super();
 
     }
-    public void setId(Integer id) {
+    public Photo(String token, byte[] photo, String id){
+        this.token = token;
+        this.photo = photo;
+        this.id = id;
+    }
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
+    }
+
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setId(String id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
-
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
-    }
-
-    public Integer getUser_id() {
-        return user_id;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
 }

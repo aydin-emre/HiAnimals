@@ -1,4 +1,4 @@
-package com.huawei.animalsintroduction;
+package com.huawei.animalsintroduction.rendering;
 
 import android.opengl.Matrix;
 
@@ -110,12 +110,6 @@ public class VirtualObject {
             mObjectColors = Arrays.copyOf(color, color.length);
         }
     }
-
-    public void setScaleFactor(float scale) {
-
-       this.SCALE_FACTOR = this.SCALE_FACTOR + 0.20f;
-    }
-
     /**
      * Obtain the anchor matrix data of the current virtual object.
      *
@@ -131,15 +125,6 @@ public class VirtualObject {
         float[] rets = new float[MATRIX_SIZE];
         Matrix.multiplyMM(rets, 0, modelMatrix, 0, mModelMatrix, 0);
         return rets;
-    }
-
-    /**
-     * Determine whether the current virtual object is in a selected state.
-     *
-     * @return Check whether the object is selected.
-     */
-    public boolean getIsSelectedFlag() {
-        return mIsSelectedFlag;
     }
 
     /**

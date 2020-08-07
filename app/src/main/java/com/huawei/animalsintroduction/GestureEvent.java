@@ -26,8 +26,6 @@ public class GestureEvent {
      */
     public static final int GESTURE_EVENT_TYPE_SCROLL = 3;
 
-    public static final int GESTURE_EVENT_TYPE_PINCH = 4;
-
     private int type;
 
     private MotionEvent eventFirst;
@@ -39,14 +37,6 @@ public class GestureEvent {
     private float distanceY;
 
     private GestureEvent() {
-    }
-
-    public float getDistanceX() {
-        return distanceX;
-    }
-
-    public float getDistanceY() {
-        return distanceY;
     }
 
     public int getType() {
@@ -71,13 +61,6 @@ public class GestureEvent {
         GestureEvent ret = new GestureEvent();
         ret.type = GESTURE_EVENT_TYPE_DOWN;
         ret.eventFirst = motionEvent;
-        return ret;
-    }
-
-
-    static GestureEvent createPinchEvent() {
-        GestureEvent ret = new GestureEvent();
-        ret.type = GESTURE_EVENT_TYPE_PINCH;
         return ret;
     }
     /**

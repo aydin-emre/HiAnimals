@@ -1,21 +1,30 @@
 package com.huawei.animalsintroduction;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import com.huawei.animalsintroduction.common.DisplayRotationManager;
 import com.huawei.animalsintroduction.common.PermissionManager;
+import com.huawei.animalsintroduction.model.Photo;
+import com.huawei.animalsintroduction.model.User;
 import com.huawei.animalsintroduction.rendering.WorldRenderManager;
 import com.huawei.hiar.ARConfigBase;
 import com.huawei.hiar.AREnginesApk;
@@ -27,9 +36,13 @@ import com.huawei.hiar.exceptions.ARUnavailableClientSdkTooOldException;
 import com.huawei.hiar.exceptions.ARUnavailableServiceApkTooOldException;
 import com.huawei.hiar.exceptions.ARUnavailableServiceNotInstalledException;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 
-public class AnimalActivity extends Activity {
+public class AnimalActivity extends Activity implements CloudDBZoneWrapper.UiCallBack {
     private static final String TAG = AnimalActivity.class.getSimpleName();
 
     private static final int MOTIONEVENT_QUEUE_CAPACITY = 2;
@@ -54,7 +67,16 @@ public class AnimalActivity extends Activity {
 
     private ImageView ivTakePhoto;
 
-    private ScaleGestureDetector mScaleGestureDetector;
+    ImageView ivListPhoto;
+
+    RelativeLayout loadinPanel;
+
+    private CloudDBZoneWrapper mCloudDBZoneWrapper;
+
+    private MyHandler mHandler = new MyHandler();
+
+    public static Photo photo;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +87,8 @@ public class AnimalActivity extends Activity {
 
         mSurfaceView = findViewById(R.id.surfaceview);
         ivTakePhoto = findViewById(R.id.ivTakePhoto);
+        loadinPanel = findViewById(R.id.loadingPanel);
+
         mDisplayRotationManager = new DisplayRotationManager(this);
         initGestureDetector();
 
@@ -78,20 +102,29 @@ public class AnimalActivity extends Activity {
         int type = getIntent().getIntExtra("Type", -1);
 
         mWorldRenderManager = new WorldRenderManager(this, this, type);
-        mWorldRenderManager.setDisplayRotationManage(mDisplayRotationManager);
+        mWorldRenderManager.setDisplayRotationManager(mDisplayRotationManager);
         mWorldRenderManager.setQueuedSingleTaps(mQueuedSingleTaps);
 
         mSurfaceView.setRenderer(mWorldRenderManager);
         mSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
 
-        mScaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
+        ivTakePhoto.setOnClickListener(view -> takePhoto());
 
-        ivTakePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mWorldRenderManager.takePhoto(getApplicationContext());
-            }
+        ivListPhoto = findViewById(R.id.ivListPhoto);
+
+        mCloudDBZoneWrapper = new CloudDBZoneWrapper();
+        mHandler.post(() -> {
+            mCloudDBZoneWrapper.addCallBacks(AnimalActivity.this);
+            mCloudDBZoneWrapper.createObjectType();
+            mCloudDBZoneWrapper.openCloudDBZone();
         });
+        ivListPhoto.setOnClickListener(view -> {
+            //get images from Huawei Cloud Db
+
+           getImages();
+        });
+
+
     }
 
     private void initGestureDetector() {
@@ -112,29 +145,13 @@ public class AnimalActivity extends Activity {
             @Override
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
 
-                if (mScaleGestureDetector.isInProgress()) {
-                    // don't allow scrolling while scaling
-                    return false;
-                }
-
                 // handle scrolling
                 onGestureEvent(GestureEvent.createScrollEvent(e1, e2, distanceX, distanceY));
                 return true;
             }
         });
 
-        mSurfaceView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-
-              /*  boolean result = mScaleGestureDetector.onTouchEvent(event);
-                result = mGestureDetector.onTouchEvent(event) || result;
-                return result || WorldActivity.super.onTouchEvent(event);*/
-
-                return mGestureDetector.onTouchEvent(event);
-            }
-        });
+        mSurfaceView.setOnTouchListener((v, event) -> mGestureDetector.onTouchEvent(event));
     }
 
     private void onGestureEvent(GestureEvent e) {
@@ -250,6 +267,7 @@ public class AnimalActivity extends Activity {
             mArSession.stop();
             mArSession = null;
         }
+        mCloudDBZoneWrapper.closeCloudDBZone();
         super.onDestroy();
         Log.i(TAG, "onDestroy end.");
     }
@@ -266,17 +284,88 @@ public class AnimalActivity extends Activity {
         }
     }
 
-    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+    @Override
+    public void onAddOrQuery(List<User> userList) {
 
+    }
 
-        @Override
-        public boolean onScale(ScaleGestureDetector scaleGestureDetector) {
-            Toast.makeText(getApplicationContext(), "asd1", Toast.LENGTH_SHORT).show();
-            onGestureEvent(GestureEvent.createPinchEvent());
-            return true;
+    @Override
+    public void isLastID(int lastID) {
+
+    }
+
+    @Override
+    public void isDataUpsert(Boolean state) {
+
+    }
+
+    @Override
+    public void updateUiOnError(String errorMessage) {
+
+    }
+
+    @Override
+    public void onAddOrQueryPhoto(List<Photo> photoList) {
+        if (photoList == null){
+            loadinPanel.setVisibility(View.GONE);
+            ivListPhoto.setClickable(true);
+            ivTakePhoto.setClickable(true);
+        }
+        else {
+            photo = photoList.get(0);
+            Intent intent = new Intent(AnimalActivity.this, PhotoActivity.class);
+
+            //creates the temporary file and gets the path
+            Bitmap bitmap = BitmapFactory.decodeByteArray(photo.getPhoto(), 0, photo.getPhoto().length);
+
+            String filePath= tempFileImage(this,bitmap,"name");
+
+            //passes the file path string with the intent
+            intent.putExtra("path", filePath);
+
+            loadinPanel.setVisibility(View.GONE);
+            ivListPhoto.setClickable(true);
+            ivTakePhoto.setClickable(true);
+
+            startActivity(intent);
         }
     }
 
+    //creates a temporary file and return the absolute file path
+    public static String tempFileImage(Context context, Bitmap bitmap, String name) {
 
+        File outputDir = context.getCacheDir();
+        File imageFile = new File(outputDir, name + ".jpg");
+
+        OutputStream os;
+        try {
+            os = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+            os.flush();
+            os.close();
+        } catch (Exception e) {
+            Log.e(context.getClass().getSimpleName(), "Error writing file", e);
+        }
+
+        return imageFile.getAbsolutePath();
+    }
+
+    private static final class MyHandler extends Handler {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+        }
+    }
+
+    public void takePhoto(){
+        mWorldRenderManager.takePhoto(getApplicationContext(), mCloudDBZoneWrapper);
+
+    }
+
+    public void getImages(){
+        ivListPhoto.setClickable(false);
+        ivTakePhoto.setClickable(false);
+        loadinPanel.setVisibility(View.VISIBLE);
+        mCloudDBZoneWrapper.getAllPhotos(this);
+    }
 }
 

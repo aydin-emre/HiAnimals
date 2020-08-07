@@ -67,12 +67,7 @@ public class ConnectAppMarketActivity extends Activity {
                 }
             }
         });
-        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialogInterface) {
-                finish();
-            }
-        });
+        dialog.setOnCancelListener(dialogInterface -> finish());
     }
 
     private void downLoadArServiceApp() {

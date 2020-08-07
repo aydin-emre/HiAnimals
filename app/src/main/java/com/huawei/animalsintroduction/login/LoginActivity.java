@@ -1,6 +1,7 @@
 package com.huawei.animalsintroduction.login;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,15 +15,14 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.huawei.agconnect.auth.AGConnectAuth;
 import com.huawei.agconnect.auth.AGConnectAuthCredential;
-import com.huawei.agconnect.auth.AGConnectUser;
 import com.huawei.agconnect.auth.HwIdAuthProvider;
 import com.huawei.agconnect.auth.SignInResult;
 import com.huawei.animalsintroduction.AnimalListActivity;
 import com.huawei.animalsintroduction.CloudDBZoneWrapper;
 import com.huawei.animalsintroduction.Constant;
 import com.huawei.animalsintroduction.R;
+import com.huawei.animalsintroduction.model.Photo;
 import com.huawei.animalsintroduction.model.User;
-import com.huawei.hmf.tasks.OnFailureListener;
 import com.huawei.hmf.tasks.OnSuccessListener;
 import com.huawei.hmf.tasks.Task;
 import com.huawei.hms.common.ApiException;
@@ -135,6 +135,11 @@ public class LoginActivity extends AppCompatActivity implements CloudDBZoneWrapp
 
     }
 
+    @Override
+    public void onAddOrQueryPhoto(List<Photo> photoList) {
+
+    }
+
     private static final class MyHandler extends Handler {
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -164,19 +169,19 @@ public class LoginActivity extends AppCompatActivity implements CloudDBZoneWrapp
         AGConnectAuthCredential credential = HwIdAuthProvider.credentialWithToken(accessToken);
         Log.d(TAG, "accessToken: " + accessToken);
         Log.d(TAG, "credential: " + credential);
-        AGConnectAuth.getInstance().signIn(credential).addOnSuccessListener(new OnSuccessListener<SignInResult>() {
-            @Override
-            public void onSuccess(SignInResult signInResult) {
-                AGConnectUser user1 = AGConnectAuth.getInstance().getCurrentUser();
-                String currentUID = user1.getUid();
-                Log.w("PROFILE_TAG", "GIVE DETAIL : AGConnectUser UID : " + currentUID);
-                User u = new User(signInResult.getUser().getUid(), accessToken, signInResult.getUser().getDisplayName());
-                mCloudDBZoneWrapper.insertUser(u);
+        AGConnectAuth.getInstance().signIn(credential).addOnSuccessListener(signInResult -> {
 
-                mCloudDBZoneWrapper.closeCloudDBZone();
-                startActivity(new Intent(LoginActivity.this, AnimalListActivity.class));
-                finish();
-            }
+            SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString("token", accessToken);  // Saving token
+            // Save the changes in SharedPreferences
+            editor.apply(); // commit changes
+
+            User u = new User(signInResult.getUser().getUid(), accessToken, signInResult.getUser().getDisplayName());
+            mCloudDBZoneWrapper.insertUser(u);
+            mCloudDBZoneWrapper.closeCloudDBZone();
+            startActivity(new Intent(LoginActivity.this, AnimalListActivity.class));
+            finish();
         }).addOnFailureListener(e -> Log.d(TAG, "Error: " + e));
     }
 

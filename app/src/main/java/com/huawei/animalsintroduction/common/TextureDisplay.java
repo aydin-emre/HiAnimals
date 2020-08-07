@@ -106,18 +106,6 @@ public class TextureDisplay {
     }
 
     /**
-     * If the texture ID has been created externally, this method is called when
-     * {@link android.opengl.GLSurfaceView.Renderer#onSurfaceCreated}.
-     *
-     * @param textureId Texture id.
-     */
-    public void init(int textureId) {
-        mExternalTextureId = textureId;
-        generateExternalTexture();
-        createProgram();
-    }
-
-    /**
      * Obtain the texture ID.
      *
      * @return Texture id.
