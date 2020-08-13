@@ -1,10 +1,12 @@
 package com.huawei.animalsintroduction;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Handler;
@@ -366,6 +368,17 @@ public class AnimalActivity extends Activity implements CloudDBZoneWrapper.UiCal
         ivTakePhoto.setClickable(false);
         loadinPanel.setVisibility(View.VISIBLE);
         mCloudDBZoneWrapper.getAllPhotos(this);
+    }
+
+    public void showImageFromLocal(Bitmap bmp){
+
+        Intent intent = new Intent(this, PhotoActivityLocal.class);
+        String filePath= tempFileImage(this,bmp,"locale");
+        //passes the file path string with the intent
+        intent.putExtra("filePath", filePath);
+        startActivity(intent);
+
+
     }
 }
 

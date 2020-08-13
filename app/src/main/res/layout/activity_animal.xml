@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".AnimalActivity">
 
+
     <android.opengl.GLSurfaceView
         android:id="@+id/surfaceview"
         android:layout_width="fill_parent"

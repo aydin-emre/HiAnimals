@@ -1,41 +1,23 @@
-/**
- * Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- */
-
 package com.huawei.animalsintroduction.rendering;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
-import android.os.Environment;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.huawei.animalsintroduction.AnimalActivity;
 import com.huawei.animalsintroduction.CloudDBZoneWrapper;
 import com.huawei.animalsintroduction.GestureEvent;
 import com.huawei.animalsintroduction.R;
 import com.huawei.animalsintroduction.common.ArDemoRuntimeException;
 import com.huawei.animalsintroduction.common.DisplayRotationManager;
 import com.huawei.animalsintroduction.common.TextureDisplay;
-import com.huawei.animalsintroduction.model.Photo;
 import com.huawei.hiar.ARCamera;
 import com.huawei.hiar.ARFrame;
 import com.huawei.hiar.ARHitResult;
@@ -46,12 +28,7 @@ import com.huawei.hiar.ARPose;
 import com.huawei.hiar.ARSession;
 import com.huawei.hiar.ARTrackable;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.BufferUnderflowException;
-import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -76,14 +53,6 @@ public class WorldRenderManager implements GLSurfaceView.Renderer {
 
     private static final float PROJ_MATRIX_FAR = 100.0f;
 
-    private static final float MATRIX_SCALE_SX = -1.0f;
-
-    private static final float MATRIX_SCALE_SY = -1.0f;
-
-    private static final float[] BLUE_COLORS = new float[] {66.0f, 133.0f, 244.0f, 255.0f};
-
-    private static final float[] GREEN_COLORS = new float[] {66.0f, 133.0f, 244.0f, 255.0f};
-
     private ARSession mSession;
 
     private Activity mActivity;
@@ -93,12 +62,6 @@ public class WorldRenderManager implements GLSurfaceView.Renderer {
     private int mType;
 
     private TextView mSearchingTextView;
-
-    private int frames = 0;
-
-    private long lastInterval;
-
-    private float fps;
 
     private TextureDisplay mTextureDisplay = new TextureDisplay();
 
@@ -419,16 +382,6 @@ public class WorldRenderManager implements GLSurfaceView.Renderer {
         GLES20.glReadPixels(0, 0, mWidth, mHeight,
                 GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, buf);
 
-        String date = Long.toHexString(System.currentTimeMillis());
-        // Create a file in the Pictures/AnimalsIntro album.
-        final File out = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES) + "/AnimalsIntro", "Img" +
-                date + ".png");
-
-        // Make sure the directory exists
-        if (!out.getParentFile().exists()) {
-            out.getParentFile().mkdirs();
-        }
 
         // Convert the pixel data from RGBA to what Android wants, ARGB.
         int bitmapData[] = new int[pixelData.length];
@@ -445,21 +398,9 @@ public class WorldRenderManager implements GLSurfaceView.Renderer {
         Bitmap bmp = Bitmap.createBitmap(bitmapData,
                 mWidth, mHeight, Bitmap.Config.ARGB_8888);
 
-        // Write it to disk.
-        FileOutputStream fos = new FileOutputStream(out);
-        bmp.compress(Bitmap.CompressFormat.PNG, 100, fos);
-        fos.flush();
-        fos.close();
-
-        //Add photo to Huawei Cloud DB
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
-        bmp.recycle();
-        SharedPreferences pref = mContext.getSharedPreferences("MyPref", mContext.MODE_PRIVATE);
-        Photo p = new Photo(pref.getString("token", null), byteArray, date);
-        mCloudDBZoneWrapper.insertPhoto(p);
+        ((AnimalActivity)mActivity).showImageFromLocal(bmp);
 
     }
+
 
 }
