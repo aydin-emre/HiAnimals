@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AnimalsIntroduction</string>
+    <string name="app_name">HiAnimals</string>
     <string name="login_with_huawei">Login via Huawei</string>
     <string name="login">Login</string>
     <string name="emailaddress">EmailAddress</string>

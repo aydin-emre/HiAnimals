@@ -9,7 +9,7 @@
 		"client_id":"400544333272450176",
 		"client_secret":"94D648F91DBEBBE6FC3B7C38D2FF541364250F9E34B964AF24E1F050F532999B",
 		"app_id":"102514193",
-		"package_name":"com.huawei.animalsintroduction",
+		"package_name":"com.huawei.hiAnimals",
 		"api_key":"CgB6e3x9NYcAajycBuvVBonpoIuuK9YLhUjijvNLgzWAogNnfyQoyJK8toc55IdmPvto9EDCYvIzAsN21RtH/jLP"
 	},
 	"service":{
@@ -19,7 +19,7 @@
 			"channel_id":""
 		},
 		"cloudstorage":{
-			"storage_url":"https://agc-storage-dre.platform.dbankcloud.cn"
+			"storage_url":"https://ops-dre.agcstorage.link"
 		},
 		"ml":{
 			"mlservice_url":"ml-api-dre.ai.dbankcloud.com,ml-api-dre.ai.dbankcloud.cn"
