@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <img align="left" src="pictures/deerIcon.png" width="8%">.
 # Animals Introduction
 
@@ -32,3 +33,6 @@ Huawei Ads Kit<br/>
 Huawei Push Kit<br/>
 
 
+=======
+# HiAnimals
+>>>>>>> origin/master
