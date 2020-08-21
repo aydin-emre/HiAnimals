@@ -17,16 +17,47 @@ This app allows you to visualize some animals as AR.
 <img src="pictures/duckPhoto.jpg" width="10%">.
 <img src="pictures/share.jpg" width="10%">.
 
+##  :question: Before You Start
+
+* You need to agconnect-services.json for run this project correctly.<br/>
+* If you don't have a Huawei Developer account check this document for create; <br/>
+https://developer.huawei.com/consumer/en/doc/start/10104<br/>
+* Open your Android project and find Debug FingerPrint (SHA256) with follow this steps;<br/>
+View -> Tool Windows -> Gradle -> Tasks -> Android -> signingReport<br/>
+* Login to Huawei Developer Console (https://developer.huawei.com/consumer/en/console)<br/>
+* If you don't have any app check this document for create; <br/>
+https://developer.huawei.com/consumer/en/doc/distribution/app/agc-create_app<br/>
+* Add SHA256 FingerPrint into your app with follow this steps on Huawei Console; <br/>
+My Apps -> Select App -> Project Settings<br/>
+*; Make enable necessary SDKs with follow this steps;<br/>
+My Apps -> Select App -> Project Settings -> Manage APIs<br/>
+* For this project you have to set enable Account Kit, Auth Service, Push Kit, Cloud DB<br/>
+* Than go again Project Settings page and click "agconnect-services.json" button for download json file.<br/>
+* Move to json file in base "app" folder that under your android project. <br/>
+(https://developer.huawei.com/consumer/en/doc/development/HMS-Guides/69407812#h1-1577692046342)<br/>
+* Go to app level gradle file and change application id of your android project. It must be same with app id on AppGallery console you defined.
+
+##  :information_desk_person: Things to Know
+
+* Since the application is written entirely in HMS, you must have HMS Core installed on your device.<br/>
+* For Android devices without HMS Core, you can download the latest version from this link; https://tik.to/9l6<br/>
+* Also your phone should support Huawei AR Engine. You can reach supported device list here. <br/>
+(https://developer.huawei.com/consumer/en/doc/HMSCore-Guides-V5/introduction-0000001050130900-V5#EN-US_TOPIC_0000001050130900__section260mcpsimp)
+
+
+
 ## :milky_way: Features
-Sign up & Sign In with Huawei Id<br/>
-Select an animal and visualize it as AR<br/>
-Take a photo with selected animal<br/>
-Save photos to the local or cloud and get it back<br/>
-Share taken photos.<br/>
+
+* Sign up & Sign In with Huawei Id<br/>
+* Select an animal and visualize it as AR<br/>
+* Take a photo with selected animal<br/>
+* Save photos to the local or cloud and get it back<br/>
+* Share taken photos.<br/>
 
 ## :rocket: Kits
-Huawei Account Kit<br/>
-Huawei AR Kit<br/>
-Huawei Cloud DB<br/>
-Huawei Ads Kit<br/>
-Huawei Push Kit<br/>
+
+* Huawei Account Kit<br/>
+* Huawei AR Kit<br/>
+* Huawei Cloud DB<br/>
+* Huawei Ads Kit<br/>
+* Huawei Push Kit<br/>
