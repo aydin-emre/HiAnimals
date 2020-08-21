@@ -41,8 +41,7 @@ My Apps -> Select App -> Project Settings -> Manage APIs<br/>
 
 * Since the application is written entirely in HMS, you must have HMS Core installed on your device.<br/>
 * For Android devices without HMS Core, you can download the latest version from this link; https://tik.to/9l6<br/>
-* Also your phone should support Huawei AR Engine. You can reach supported device list [here] (https://developer.huawei.com/consumer/en/doc/HMSCore-Guides-V5/introduction-0000001050130900-V5#EN-US_TOPIC_0000001050130900__section260mcpsimp)
-. <br/>
+* Also your phone should support Huawei AR Engine. You can reach supported device list here. (https://developer.huawei.com/consumer/en/doc/HMSCore-Guides-V5/introduction-0000001050130900-V5#EN-US_TOPIC_0000001050130900__section260mcpsimp) <br/>
 
 
 
@@ -62,6 +61,9 @@ My Apps -> Select App -> Project Settings -> Manage APIs<br/>
 * [Huawei Ads Kit] (https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/publisher-service-introduction-0000001050064960)<br/>
 * [Huawei Push Kit] (https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/service-introduction-0000001050040060)<br/>
 
+
+## :telescope: Future Features 
+* Animation
 
 
 ## :link: Useful Links 
