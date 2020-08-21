@@ -56,8 +56,15 @@ My Apps -> Select App -> Project Settings -> Manage APIs<br/>
 
 ## :rocket: Kits
 
-* Huawei Account Kit<br/>
-* Huawei AR Kit<br/>
-* Huawei Cloud DB<br/>
-* Huawei Ads Kit<br/>
-* Huawei Push Kit<br/>
+* Huawei Account Kit (https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/introduction-0000001050048870)<br/>
+* Huawei AR Engine (https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/introduction-0000001050130900)<br/>
+* Huawei Cloud DB (https://developer.huawei.com/consumer/en/doc/development/AppGallery-connect-Guides/clouddb-quick_start_overview)<br/>
+* Huawei Ads Kit (https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/publisher-service-introduction-0000001050064960)<br/>
+* Huawei Push Kit (https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/service-introduction-0000001050040060)<br/>
+
+
+
+## :link: Useful Links 
+* [Huawei Developers Medium Page EN](https://medium.com/huawei-developers)
+* [Huawei Developers Medium Page TR](https://medium.com/huawei-developers-tr) 
+* [Huawei Developers Forum](https://forums.developer.huawei.com/forumPortal/en/home)
