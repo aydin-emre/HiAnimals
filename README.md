@@ -1,21 +1,21 @@
 <img align="left" src="pictures/deerIcon.png" width="8%">.
-# Animals Introduction
+# HiAnimals
 
 ## :notebook_with_decorative_cover: Introduction 
 AnimalsIntroduction is a reference AR app created with HMS kits. You can use it on your phones running with the Android-based HMS service. It was developed with the Java language.
 This app allows you to visualize some animals as AR.
 
 ## :iphone: Screenshots
-<img src="pictures/login.jpg" width="10%">.
-<img src="pictures/deer.jpg" width="10%">.
-<img src="pictures/dog.jpg" width="10%">.
-<img src="pictures/tiger.jpg" width="10%">.
-<img src="pictures/duck.jpg" width="10%">.
-<img src="pictures/deerAR.jpg" width="10%">.
-<img src="pictures/dogAR.jpg" width="10%">.
-<img src="pictures/duckAR.jpg" width="10%">.
-<img src="pictures/duckPhoto.jpg" width="10%">.
-<img src="pictures/share.jpg" width="10%">.
+<img src="pictures/login.jpg" width="20%">.
+<img src="pictures/deer.jpg" width="20%">.
+<img src="pictures/dog.jpg" width="20%">.
+<img src="pictures/tiger.jpg" width="20%">.
+<img src="pictures/duck.jpg" width="20%">.
+<img src="pictures/deerAR.jpg" width="20%">.
+<img src="pictures/dogAR.jpg" width="20%">.
+<img src="pictures/duckAR.jpg" width="20%">.
+<img src="pictures/duckPhoto.jpg" width="20%">.
+<img src="pictures/share.jpg" width="20%">.
 
 ##  :question: Before You Start
 
