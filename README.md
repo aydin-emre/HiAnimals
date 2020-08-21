@@ -29,7 +29,7 @@ View -> Tool Windows -> Gradle -> Tasks -> Android -> signingReport<br/>
 https://developer.huawei.com/consumer/en/doc/distribution/app/agc-create_app<br/>
 * Add SHA256 FingerPrint into your app with follow this steps on Huawei Console; <br/>
 My Apps -> Select App -> Project Settings<br/>
-*; Make enable necessary SDKs with follow this steps;<br/>
+* Make enable necessary SDKs with follow this steps;<br/>
 My Apps -> Select App -> Project Settings -> Manage APIs<br/>
 * For this project you have to set enable Account Kit, Auth Service, Push Kit, Cloud DB<br/>
 * Than go again Project Settings page and click "agconnect-services.json" button for download json file.<br/>
