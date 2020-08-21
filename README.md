@@ -56,11 +56,11 @@ My Apps -> Select App -> Project Settings -> Manage APIs<br/>
 
 ## :rocket: Kits
 
-* Huawei Account Kit (https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/introduction-0000001050048870)<br/>
-* Huawei AR Engine (https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/introduction-0000001050130900)<br/>
-* Huawei Cloud DB (https://developer.huawei.com/consumer/en/doc/development/AppGallery-connect-Guides/clouddb-quick_start_overview)<br/>
-* Huawei Ads Kit (https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/publisher-service-introduction-0000001050064960)<br/>
-* Huawei Push Kit (https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/service-introduction-0000001050040060)<br/>
+* [Huawei Account Kit] (https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/introduction-0000001050048870)<br/>
+* [Huawei AR Engine] (https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/introduction-0000001050130900)<br/>
+* [Huawei Cloud DB] (https://developer.huawei.com/consumer/en/doc/development/AppGallery-connect-Guides/clouddb-quick_start_overview)<br/>
+* [Huawei Ads Kit] (https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/publisher-service-introduction-0000001050064960)<br/>
+* [Huawei Push Kit] (https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/service-introduction-0000001050040060)<br/>
 
 
 
