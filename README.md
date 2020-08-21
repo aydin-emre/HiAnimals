@@ -41,8 +41,8 @@ My Apps -> Select App -> Project Settings -> Manage APIs<br/>
 
 * Since the application is written entirely in HMS, you must have HMS Core installed on your device.<br/>
 * For Android devices without HMS Core, you can download the latest version from this link; https://tik.to/9l6<br/>
-* Also your phone should support Huawei AR Engine. You can reach supported device list here. <br/>
-(https://developer.huawei.com/consumer/en/doc/HMSCore-Guides-V5/introduction-0000001050130900-V5#EN-US_TOPIC_0000001050130900__section260mcpsimp)
+* Also your phone should support Huawei AR Engine. You can reach supported device list [here] (https://developer.huawei.com/consumer/en/doc/HMSCore-Guides-V5/introduction-0000001050130900-V5#EN-US_TOPIC_0000001050130900__section260mcpsimp)
+. <br/>
 
 
 
