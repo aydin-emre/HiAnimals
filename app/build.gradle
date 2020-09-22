@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
 
-        applicationId "com.huawei.hiAnimals"
+        applicationId "com.team3.animalsintroduction"
         minSdkVersion 26
         targetSdkVersion 29
         versionCode 1

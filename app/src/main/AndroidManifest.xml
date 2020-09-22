@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.huawei.hiAnimals">
+    package="com.team3.animalsintroduction">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -8,26 +8,26 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/deer_icon"
         android:label="@string/app_name"
         android:largeHeap="true"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PhotoActivityLocal"
+        <activity android:name="com.team3.animalsintroduction.PhotoActivityLocal"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity
-            android:name=".PhotoActivity"
+            android:name="com.team3.animalsintroduction.PhotoActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".AnimalActivity"
+            android:name="com.team3.animalsintroduction.AnimalActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".AnimalListActivity"
+            android:name="com.team3.animalsintroduction.AnimalListActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.team3.animalsintroduction.MainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,7 +36,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".login.LoginActivity"
+            android:name="com.team3.animalsintroduction.login.LoginActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <meta-data
