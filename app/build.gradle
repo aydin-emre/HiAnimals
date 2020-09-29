@@ -26,8 +26,8 @@ android {
         release {
             storeFile file('HmsKey.jks')
             keyAlias 'HmsKey'
-            keyPassword '123456'
-            storePassword '123456'
+            keyPassword '1234567'
+            storePassword '1234567'
             v1SigningEnabled true
             v2SigningEnabled true
         }
@@ -42,8 +42,8 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {

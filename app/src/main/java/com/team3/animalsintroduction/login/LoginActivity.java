@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -44,6 +46,7 @@ public class LoginActivity extends AppCompatActivity implements CloudDBZoneWrapp
 
     private CloudDBZoneWrapper mCloudDBZoneWrapper;
     private MyHandler mHandler = new MyHandler();
+    RelativeLayout loadingPanel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +66,9 @@ public class LoginActivity extends AppCompatActivity implements CloudDBZoneWrapp
         });
 
         findViewById(R.id.btn_huawei).setOnClickListener(v -> signInWithHuaweiAccount());
-        findViewById(R.id.skipLabel).setOnClickListener(v -> signInWithAnonymousAccount());
+        findViewById(R.id.btn_anonym).setOnClickListener(v -> signInWithAnonymousAccount());
         findViewById(R.id.skipLabel).setOnClickListener(v -> skipLoginPage());
+        loadingPanel = findViewById(R.id.loadingPanel);
 
         //login page animation
         try {
@@ -88,6 +92,7 @@ public class LoginActivity extends AppCompatActivity implements CloudDBZoneWrapp
     }
 
     private void signInWithHuaweiAccount() {
+        loadingPanel.setVisibility(View.VISIBLE);
         AGConnectAuth auth = AGConnectAuth.getInstance();
         auth.signOut();
         HuaweiIdAuthParams authParams = new HuaweiIdAuthParamsHelper(HuaweiIdAuthParams.DEFAULT_AUTH_REQUEST_PARAM)
@@ -99,6 +104,7 @@ public class LoginActivity extends AppCompatActivity implements CloudDBZoneWrapp
     }
 
     private void signInWithAnonymousAccount() {
+        loadingPanel.setVisibility(View.VISIBLE);
         AGConnectAuth.getInstance().signInAnonymously().addOnSuccessListener(new OnSuccessListener<SignInResult>() {
             @Override
             public void onSuccess(SignInResult signInResult) {
@@ -111,6 +117,7 @@ public class LoginActivity extends AppCompatActivity implements CloudDBZoneWrapp
         });
     }
     private void skipLoginPage() {
+        loadingPanel.setVisibility(View.VISIBLE);
         Intent intent = new Intent(LoginActivity.this, AnimalListActivity.class);
         startActivity(intent);
         Bundle bundle = new Bundle();

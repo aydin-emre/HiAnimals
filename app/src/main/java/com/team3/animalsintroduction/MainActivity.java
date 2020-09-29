@@ -33,13 +33,13 @@ public class MainActivity extends AppCompatActivity {
         auth = AGConnectAuth.getInstance();
 
         StartButton = findViewById(R.id.xxxx);
-        btnArPage = findViewById(R.id.btnArPage);
+        //btnArPage = findViewById(R.id.btnArPage);
         imageViewLogin = findViewById(R.id.ivLogin);
 
 
 
         StartButton.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, LoginActivity.class)));
-        btnArPage.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, AnimalListActivity.class)));
+       // btnArPage.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, AnimalListActivity.class)));
         imageViewLogin.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, AnimalListActivity.class)));
 
         mainTitle = findViewById(R.id.main_title);
